@@ -2,7 +2,19 @@ name: Multiarch build
 
 on:
   push:
-      
+ 
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_NAMESPACE: ${{ secrets.IMAGE_NAMESPACE }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+  ARCH: ${{ secrets.ARCH }}
+  PYXIS_API_TOKEN: ${{ secrets.PYXIS_API_TOKEN }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+   
+   
 jobs:
   certify:
     runs-on: ubuntu-latest
@@ -13,20 +25,19 @@ jobs:
       
     - name: Install preflight
       run: |
-        echo ${{ secrets.ARCH }}
-        wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-${{ secrets.ARCH }}
-        chmod u+x preflight-linux-${{ secrets.ARCH }}
-        sudo mv preflight-linux-${{ secrets.ARCH }}" /usr/local/bin/preflight
+        wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-"$ARCH"
+        chmod u+x preflight-linux-"$ARCH"
+        sudo mv preflight-linux-"$ARCH" /usr/local/bin/preflight
         preflight --version
         
     - name: Check container-image
       run: |
-        preflight check container ${{ secrets.IMAGE_REGISTRY }}/${{ secrets.IMAGE_NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
+        preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
         
     - name: Login to image registry
       run: |
-        docker login --username ${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }} ${{ secrets.IMAGE_REGISTRY }}
+        docker login --username "$USERNAME" --password "$PASSWORD" "$IMAGE_REGISTRY"
       
     - name: Submit the certification results to Red Hat
       run: |
-        sudo preflight check container  ${{ secrets.IMAGE_REGISTRY }}/${{ secrets.IMAGE_NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} --submit --pyxis-api-token=${{ secrets.PYXIS_API_TOKEN }} --certification-project-id=${{ secrets.PROJECT_ID }} --docker-config=/root/.docker/config.json
+        sudo preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=/home/travis/.docker/config.json
