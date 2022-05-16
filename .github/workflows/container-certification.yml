@@ -26,7 +26,7 @@ jobs:
           distro: ubuntu20.04
           run: |
             uname -a
-            sudo apt-get install wget
+            apt-get install wget
             wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
             chmod u+x preflight-linux-ppc64le
             sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
