@@ -3,11 +3,11 @@ on: [push, pull_request]
 jobs:
   armv7_job:
     # The host should always be Linux
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-18
     name: Build on ubuntu-18.04 armv7
     steps:
       - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2
+      - uses: uraimo/run-on-arch-action@v2.2.0
         name: Run commands
         id: runcmd
         with:
