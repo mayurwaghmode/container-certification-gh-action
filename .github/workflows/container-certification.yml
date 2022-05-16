@@ -1,28 +1,32 @@
 on: [push, pull_request]
 
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_NAMESPACE: ${{ secrets.IMAGE_NAMESPACE }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+  ARCH: ${{ secrets.ARCH }}
+  PYXIS_API_TOKEN: ${{ secrets.PYXIS_API_TOKEN }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
 jobs:
-  armv7_job:
+  container_certification:
     # The host should always be Linux
-    runs-on: ubuntu-18.04
-    name: Build on ubuntu-18.04 armv7
+    runs-on: ubuntu-latest
+    name: Container certification on "$ARCH"
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2
         name: Run commands
         id: runcmd
         with:
-          arch: armv7
-          distro: ubuntu18.04
-
-          # Not required, but speeds up builds by storing container images in
-          # a GitHub package registry
-
-          # Set an output parameter `uname` for use in subsequent steps
+          arch: "$ARCH"
+          distro: ubuntu-latest
           run: |
             uname -a
-            echo ::set-output name=uname::$(uname -a)
-
-      - name: Get the output
-        # Echo the `uname` output parameter from the `runcmd` step
-        run: |
-          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+            wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
+            chmod u+x preflight-linux-ppc64le
+            sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
+            preflight --version
