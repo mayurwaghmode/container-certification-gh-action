@@ -13,6 +13,7 @@ jobs:
       
     - name: Install preflight
       run: |
+        echo ${{ secrets.ARCH }}
         wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-${{ secrets.ARCH }}
         chmod u+x preflight-linux-${{ secrets.ARCH }}
         sudo mv preflight-linux-${{ secrets.ARCH }}" /usr/local/bin/preflight
