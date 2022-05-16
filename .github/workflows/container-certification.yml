@@ -3,16 +3,16 @@ on: [push, pull_request]
 jobs:
   armv7_job:
     # The host should always be Linux
-    runs-on: ubuntu-18
+    runs-on: ubuntu22.04
     name: Build on ubuntu-18.04 armv7
     steps:
       - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2.2.0
+      - uses: uraimo/run-on-arch-action@v2
         name: Run commands
         id: runcmd
         with:
-          arch: armv7
-          distro: ubuntu18.04
+          arch: ppc64le
+          distro: ubuntu22.04
 
           # Not required, but speeds up builds by storing container images in
           # a GitHub package registry.
