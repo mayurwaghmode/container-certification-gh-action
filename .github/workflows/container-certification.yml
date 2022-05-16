@@ -23,7 +23,7 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
       
-    - name: Install preflight
+    - name: Install preflight 
       run: |
         wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-amd64
         chmod u+x preflight-linux-amd64
@@ -40,4 +40,4 @@ jobs:
       
     - name: Submit the certification results to Red Hat
       run: |
-        sudo preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=/home/travis/.docker/config.json
+        sudo preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=/home/runner/.docker/config.json
