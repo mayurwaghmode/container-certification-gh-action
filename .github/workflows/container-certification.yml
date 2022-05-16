@@ -24,7 +24,7 @@ jobs:
         with:
           arch: ppc64le
           distro: ubuntu_latest
-
+          githubToken: ${{ github.token }}
           run: |
             uname -a
             apt-get install wget
