@@ -14,7 +14,7 @@ jobs:
           run: |
             uname -a
             apt-get install wget
-            wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
+            curl -OL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
             chmod u+x preflight-linux-ppc64le
             mv preflight-linux-ppc64le /usr/local/bin/preflight
             preflight --version
