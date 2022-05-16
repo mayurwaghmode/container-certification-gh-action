@@ -14,7 +14,7 @@ env:
 jobs:
   container_certification:
     # The host should always be Linux
-    runs-on: ubuntu_latest
+    runs-on: ubuntu22.04
     name: Container certification on "$ARCH"
     steps:
     
@@ -23,7 +23,7 @@ jobs:
         id: runcmd
         with:
           arch: ppc64le
-          distro: ubuntu_latest
+          distro: ubuntu22.04
           run: |
             uname -a
             sudo apt-get install wget
