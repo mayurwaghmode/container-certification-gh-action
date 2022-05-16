@@ -14,16 +14,16 @@ env:
 jobs:
   container_certification:
     # The host should always be Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu_latest
     name: Container certification on "$ARCH"
     steps:
-      - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2
-        name: Run commands
+    
+      - name: Run on architecture
+        uses: uraimo/run-on-arch-action@v2.2.0
         id: runcmd
         with:
           arch: ppc64le
-          distro: ubuntu20.04
+          distro: ubuntu_latest
           run: |
             uname -a
             apt-get install wget
