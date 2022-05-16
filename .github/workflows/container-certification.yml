@@ -1,23 +1,31 @@
-on: [push]
+on: [push, pull_request]
 
 jobs:
   armv7_job:
+    # The host should always be Linux
     runs-on: ubuntu-20.04
-    name: Build on ppc64le
+    name: Build on ubuntu-18.04 armv7
     steps:
-      - uses: actions/checkout@v2
-      - uses: darsvador/run-on-arch-action@v1.0.10
+      - uses: actions/checkout@v2.1.0
+      - uses: mayurwaghmode/run-on-arch-action@v2
+        name: Run commands
         id: runcmd
         with:
-          architecture: ppc64le
-          distribution: ubuntu20.04
+          arch: ppc64le
+          distro: ubuntu20.04
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+
+          # Set an output parameter `uname` for use in subsequent steps
           run: |
             uname -a
-            apt install curl
-            curl -OL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
-            chmod u+x preflight-linux-ppc64le
-            mv preflight-linux-ppc64le /usr/local/bin/preflight
+            echo ::set-output name=uname::$(uname -a)
+            wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
             preflight --version
+
       - name: Get the output
+        # Echo the `uname` output parameter from the `runcmd` step
         run: |
-            echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
