@@ -42,7 +42,7 @@ jobs:
           
       - name: Check container image
         run: |
-          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
+          preflight check container quay.io/mayurwaghmode111/demo-container-image:power
           
       - name: Login to image registry
         run: |
