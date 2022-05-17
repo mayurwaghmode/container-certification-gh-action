@@ -42,8 +42,8 @@ jobs:
           
       - name: Check container image
         run: |
-          preflight check container quay.io/mayurwaghmode111/demo-container-image:power
-          
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"   
+
       - name: Login to image registry
         run: |
           podman login --username "$USERNAME" --password "$PASSWORD" "$IMAGE_REGISTRY"
