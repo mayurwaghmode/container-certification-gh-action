@@ -28,7 +28,7 @@ on:
 jobs:
   # This workflow contains a single job called "build
   ppc64le:
-      runs-on: ${ARCH}
+      runs-on: ${{ env.ARCH }}
       steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
