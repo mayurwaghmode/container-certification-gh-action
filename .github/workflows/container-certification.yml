@@ -42,10 +42,7 @@ jobs:
           
       - name: Check container image
         run: |
-          echo "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
-          echo "$PYXIS_API_TOKEN" 
-          echo "$PROJECT_ID"
-          preflight check container $IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
           
       - name: Login to image registry
         run: |
@@ -53,4 +50,4 @@ jobs:
         
       - name: Submit the certification results to Red Hat
         run: |
-           preflight check container quay.io/mayurwaghmode111/demo-container-image:power --submit --pyxis-api-token=3h5l3mm9uefqdax2jyw5ph8hgmjqt7rx --certification-project-id=626bb0c9c2384d3236b98814  --docker-config=${XDG_RUNTIME_DIR}/containers/auth.json
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=${XDG_RUNTIME_DIR}/containers/auth.json
