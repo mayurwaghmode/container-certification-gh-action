@@ -30,5 +30,17 @@ jobs:
           sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
           preflight --version
           preflight check container quay.io/mayurwaghmode111/demo-container-image:power
-
           
+      - name: Check container image
+        run: |
+          preflight check container quay.io/mayurwaghmode111/demo-container-image:power
+          
+      - name: Login to image registry
+        run: |
+          docker login --username "$USERNAME" --password "$PASSWORD" "$IMAGE_REGISTRY"
+        
+      - name: Submit the certification results to Red Hat
+        run: |
+         sudo preflight check container quay.io/mayurwaghmode111/demo-container-image:power --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=/home/runner/.docker/config.json
+
+        
