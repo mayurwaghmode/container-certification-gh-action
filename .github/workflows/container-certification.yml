@@ -1,31 +1,35 @@
-on: [push, pull_request]
+# This is a basic workflow to help you get started with Actions
 
+name: ppc64le runner ci
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  armv7_job:
-    # The host should always be Linux
-    runs-on: ubuntu-20.04
-    name: Build on ubuntu-18.04 armv7
-    steps:
-      - uses: actions/checkout@v2.1.0
-      - uses: mayurwaghmode/run-on-arch-action@v2
-        name: Run commands
-        id: runcmd
-        with:
-          arch: ppc64le
-          distro: ubuntu20.04
+  # This workflow contains a single job called "build
+  ppc64le:
+      runs-on: ppc64le
+      steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-          # Not required, but speeds up builds by storing container images in
-          # a GitHub package registry.
-          githubToken: ${{ github.token }}
-
-          # Set an output parameter `uname` for use in subsequent steps
-          run: |
-            uname -a
-            echo ::set-output name=uname::$(uname -a)
-            wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
-            preflight --version
-
-      - name: Get the output
-        # Echo the `uname` output parameter from the `runcmd` step
+      # Runs a single command using the runners shell
+      - name: Install preflight 
         run: |
-          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+          wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
+          chmod u+x preflight-linux-ppc64le
+          sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
+          preflight --version
+ 
+      - name: Check container-image
+        run: |
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
