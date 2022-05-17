@@ -50,4 +50,4 @@ jobs:
         
       - name: Submit the certification results to Red Hat
         run: |
-          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=${XDG_RUNTIME_DIR}/containers/auth.json.
+          preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=${XDG_RUNTIME_DIR}/containers/auth.json
