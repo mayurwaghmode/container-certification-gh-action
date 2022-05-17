@@ -42,6 +42,9 @@ jobs:
           
       - name: Check container image
         run: |
+          echo "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
+          echo "$PYXIS_API_TOKEN" 
+          echo "$PROJECT_ID"
           preflight check container quay.io/mayurwaghmode111/demo-container-image:power
           
       - name: Login to image registry
