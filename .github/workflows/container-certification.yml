@@ -32,13 +32,6 @@ jobs:
       steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      - name: Install nodejs 
-        run: |
-          wget https://nodejs.org/dist/latest/node-v18.1.0-linux-"$ARCH".tar.gz
-          tar -xvf node-v18.1.0-linux-ppc64le.tar.gz
-          mv node-v18.1.0-linux-ppc64le/bin/node /usr/local/bin/
-          node --version
           
       - name: Install preflight 
         run: |
@@ -58,5 +51,3 @@ jobs:
       - name: Submit the certification results to Red Hat
         run: |
           preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG" --submit --pyxis-api-token="$PYXIS_API_TOKEN" --certification-project-id="$PROJECT_ID" --docker-config=/root/.docker/config.json
-
-        
