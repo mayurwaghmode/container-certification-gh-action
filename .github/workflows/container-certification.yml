@@ -29,7 +29,7 @@ jobs:
           chmod u+x preflight-linux-ppc64le
           sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
           preflight --version
- 
+
       - name: Check container-image
         run: |
           preflight check container "$IMAGE_REGISTRY"/"$IMAGE_NAMESPACE"/"$IMAGE_NAME":"$IMAGE_TAG"
