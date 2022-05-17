@@ -46,7 +46,7 @@ jobs:
           
       - name: Login to image registry
         run: |
-          docker login --username "$USERNAME" --password "$PASSWORD" "$IMAGE_REGISTRY"
+          podman login --username "$USERNAME" --password "$PASSWORD" "$IMAGE_REGISTRY"
         
       - name: Submit the certification results to Red Hat
         run: |
