@@ -35,9 +35,10 @@ jobs:
           
       - name: Install preflight 
         run: |
-          wget https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.2.0/preflight-linux-ppc64le
+          curl -s https://api.github.com/repos/redhat-openshift-ecosystem/openshift-preflight/releases/latest|grep browser_download_url |grep ppc64le|cut -d : -f 2,3|tr -d \"|xargs curl -LO
           chmod u+x preflight-linux-ppc64le
-          sudo mv preflight-linux-ppc64le /usr/local/bin/preflight
+          mv preflight-linux-ppc64le /usr/local/bin/preflight
+          chmod 777 /usr/local/bin/preflight
           preflight --version
           
       - name: Check container image
